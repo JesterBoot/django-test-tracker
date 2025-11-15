@@ -1,0 +1,56 @@
+[project]
+name = "django-test-tracker"
+version = "0.1.0"
+description = "Task Manager backend"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.2.8",
+    "django-environ>=0.12.0",
+    "djangorestframework>=3.16.1",
+    "djangorestframework-simplejwt>=5.5.1",
+    "drf-spectacular>=0.29.0",
+    "psycopg[c]>=3.2.12",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=5.2.7",
+    "djangorestframework-stubs>=3.16.5",
+    "mypy>=1.18.2",
+    "pytest>=9.0.1",
+    "pytest-django>=4.11.1",
+    "ruff>=0.14.5",
+    "typing-extensions>=4.15.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "PL", "N"]
+ignore = ["E203"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+combine-as-imports = true
+
+[tool.mypy]
+python_version = "3.13"
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+ignore_missing_imports = true
+plugins = [
+  "mypy_django_plugin.main",
+  "mypy_drf_plugin.main",
+]
+
+[tool.django-stubs]
+django_settings_module = "config.settings"
