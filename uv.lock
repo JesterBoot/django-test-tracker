@@ -140,6 +140,7 @@ dependencies = [
     { name = "djangorestframework" },
     { name = "djangorestframework-simplejwt" },
     { name = "drf-spectacular" },
+    { name = "drf-spectacular-sidecar" },
     { name = "psycopg", extra = ["c"] },
 ]
 
@@ -161,6 +162,7 @@ requires-dist = [
     { name = "djangorestframework", specifier = ">=3.16.1" },
     { name = "djangorestframework-simplejwt", specifier = ">=5.5.1" },
     { name = "drf-spectacular", specifier = ">=0.29.0" },
+    { name = "drf-spectacular-sidecar", specifier = ">=2025.10.1" },
     { name = "psycopg", extras = ["c"], specifier = ">=3.2.12" },
 ]
 
@@ -232,6 +234,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5e/0e/a4f50d83e76cbe797eda88fc0083c8ca970cfa362b5586359ef06ec6f70a/drf_spectacular-0.29.0.tar.gz", hash = "sha256:0a069339ea390ce7f14a75e8b5af4a0860a46e833fd4af027411a3e94fc1a0cc", size = 241722, upload-time = "2025-11-02T03:40:26.348Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/32/d9/502c56fc3ca960075d00956283f1c44e8cafe433dada03f9ed2821f3073b/drf_spectacular-0.29.0-py3-none-any.whl", hash = "sha256:d1ee7c9535d89848affb4427347f7c4a22c5d22530b8842ef133d7b72e19b41a", size = 105433, upload-time = "2025-11-02T03:40:24.823Z" },
+]
+
+[[package]]
+name = "drf-spectacular-sidecar"
+version = "2025.10.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c3/e4/99cd1b1c8c69788bd6cb6a2459674f8c75728e79df23ac7beddd094bf805/drf_spectacular_sidecar-2025.10.1.tar.gz", hash = "sha256:506a5a21ce1ad7211c28acb4e2112e213f6dc095a2052ee6ed6db1ffe8eb5a7b", size = 2420998, upload-time = "2025-10-01T11:23:27.092Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/87/70c67391e4ce68715d4dfae8dd33caeda2552af22f436ba55b8867a040fe/drf_spectacular_sidecar-2025.10.1-py3-none-any.whl", hash = "sha256:f1de343184d1a938179ce363d318258fe1e5f02f2f774625272364835f1c42bd", size = 2440241, upload-time = "2025-10-01T11:23:25.743Z" },
 ]
 
 [[package]]

@@ -10,6 +10,7 @@ dependencies = [
     "djangorestframework>=3.16.1",
     "djangorestframework-simplejwt>=5.5.1",
     "drf-spectacular>=0.29.0",
+    "drf-spectacular-sidecar>=2025.10.1",
     "psycopg[c]>=3.2.12",
 ]
 
@@ -27,6 +28,7 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py313"
+exclude = ["**/migrations/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "PL", "N"]
