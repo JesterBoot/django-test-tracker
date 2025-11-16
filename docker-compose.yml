@@ -19,6 +19,21 @@ services:
       retries: 5
       start_period: 10s
 
+  redis:
+    image: redis:7-alpine
+    container_name: tracker-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: [ "redis-server", "--appendonly", "no" ]
+    networks:
+      - tracker-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+
 networks:
   tracker-network:
     driver: bridge

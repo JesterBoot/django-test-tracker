@@ -1,0 +1,19 @@
+[run]
+branch = True
+source = src
+
+[report]
+omit =
+    */migrations/*
+    */__init__.py
+    */tests/*
+    */settings.py
+    */wsgi.py
+    */asgi.py
+    */manage.py
+
+show_missing = True
+skip_empty = True
+
+[html]
+directory = coverage_html
