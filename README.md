@@ -20,6 +20,9 @@
 | `JWT_REFRESH_LIFETIME_DAYS` | Срок жизни refresh-токена в днях                                      |
 | `API_TITLE`                 | Название API для документации                                         |
 | `API_VERSION`               | Версия API                                                            |
+| `REDIS_HOST`                | Redis хост                                                            |
+| `REDIS_PORT`                | Redis порт                                                            |
+| `REDIS_DB`                  | Redis индекс бд                                                       |
 
 
 ## Локальная разработка

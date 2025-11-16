@@ -20,3 +20,16 @@ def test_login_success(api_client, user):
     assert "tokens" in data
     assert "access" in data["tokens"]
     assert "refresh" in data["tokens"]
+
+
+@pytest.mark.django_db
+def test_login_throttle(api_client):
+    url = reverse("auth-login")
+    payload = {"email": "a@b.com", "password": "wrong"}
+
+    for _ in range(5):
+        response = api_client.post(url, payload, format="json")
+        assert response.status_code in (200, 400, 401)
+
+    blocked = api_client.post(url, payload, format="json")
+    assert blocked.status_code == 429

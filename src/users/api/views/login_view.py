@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.throttling import LoginRateThrottle
 from users.api.serializers import LoginResponseSerializer, LoginSerializer
 from users.api.tokens import generate_user_tokens
 from users.services.dto.login import LoginUserDTO, LoginUserResponseDTO
@@ -17,6 +18,7 @@ from users.services.user_services import authenticate_user
 )
 class LoginView(APIView):
     permission_classes = [AllowAny]
+    throttle_classes = [LoginRateThrottle]
 
     @staticmethod
     def post(request) -> Response:

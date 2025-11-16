@@ -1,4 +1,5 @@
 import pytest
+from django.core.cache import cache
 from rest_framework.test import APIClient
 
 from tests.users.factories import UserFactory
@@ -24,3 +25,10 @@ def auth_client(user):
 
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
     return client
+
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    cache.clear()
+    yield
+    cache.clear()

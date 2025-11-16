@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from core.throttling import RefreshTokenRateThrottle
 from users.api.serializers import RefreshResponseSerializer
 from users.services.dto.tokens import RefreshTokenDTO, RefreshTokenResponseDTO
 
@@ -20,6 +21,7 @@ from users.services.dto.tokens import RefreshTokenDTO, RefreshTokenResponseDTO
 )
 class RefreshView(APIView):
     permission_classes = [AllowAny]
+    throttle_classes = [RefreshTokenRateThrottle]
 
     @staticmethod
     def post(request) -> Response:

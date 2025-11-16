@@ -15,6 +15,7 @@ dependencies = [
     "factory-boy>=3.3.3",
     "psycopg[c]>=3.2.12",
     "pytest-cov>=7.0.0",
+    "redis>=7.0.1",
 ]
 
 [dependency-groups]
