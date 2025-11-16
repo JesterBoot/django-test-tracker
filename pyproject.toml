@@ -5,13 +5,16 @@ description = "Task Manager backend"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "coverage>=7.11.3",
     "django>=5.2.8",
     "django-environ>=0.12.0",
     "djangorestframework>=3.16.1",
     "djangorestframework-simplejwt>=5.5.1",
     "drf-spectacular>=0.29.0",
     "drf-spectacular-sidecar>=2025.10.1",
+    "factory-boy>=3.3.3",
     "psycopg[c]>=3.2.12",
+    "pytest-cov>=7.0.0",
 ]
 
 [dependency-groups]

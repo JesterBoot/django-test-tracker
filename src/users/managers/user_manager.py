@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Any, TypeVar
 
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
@@ -33,4 +31,11 @@ class UserManager(BaseUserManager[U]):
     def create_superuser(self, email: str, password: str, **extra_fields: Any) -> U:
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields["is_staff"] is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+
+        if extra_fields["is_superuser"] is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
         return self._create_user(email, password, **extra_fields)
