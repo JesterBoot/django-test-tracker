@@ -1,8 +1,8 @@
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
+from rest_framework import serializers, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers, status
 
 from users.services.dto.logout_dto import LogoutDTO
 from users.services.user_logout import blacklist_refresh_token
