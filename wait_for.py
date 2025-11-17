@@ -2,6 +2,7 @@ import os
 import socket
 import time
 
+
 host = os.getenv("POSTGRES_HOST", "db")
 port = int(os.getenv("POSTGRES_PORT", "5432"))
 

@@ -34,6 +34,17 @@ class RefreshView(APIView):
     throttle_classes = [RefreshTokenRateThrottle]
 
     @staticmethod
+    @extend_schema(
+        operation_id="auth_refresh",
+        tags=["Auth"],
+        summary="Обновление токена",
+        request=refresh_request_serializer,
+        responses={
+            200: RefreshResponseSerializer,
+            400: OpenApiResponse(description="Отсутствует refresh токен"),
+            401: OpenApiResponse(description="Неверный refresh токен"),
+        },
+    )
     def post(request) -> Response:
         data: RefreshTokenDTO = request.data
 

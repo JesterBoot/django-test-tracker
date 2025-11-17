@@ -11,23 +11,23 @@ from users.services.dto.login import LoginUserDTO, LoginUserResponseDTO
 from users.services.user_services import authenticate_user
 
 
-@extend_schema(
-    operation_id="auth_login",
-    tags=["Auth"],
-    summary="Авторизация пользователя",
-    request=LoginSerializer,
-    responses={
-        200: LoginResponseSerializer,
-        400: OpenApiResponse(description="Ошибка валидации данных"),
-        401: OpenApiResponse(description="Неверный email или пароль"),
-        429: OpenApiResponse(description="Слишком много попыток входа"),
-    },
-)
 class LoginView(APIView):
     permission_classes = [AllowAny]
     throttle_classes = [LoginRateThrottle]
 
     @staticmethod
+    @extend_schema(
+        operation_id="auth_login",
+        tags=["Auth"],
+        summary="Авторизация пользователя",
+        request=LoginSerializer,
+        responses={
+            200: LoginResponseSerializer,
+            400: OpenApiResponse(description="Ошибка валидации данных"),
+            401: OpenApiResponse(description="Неверный email или пароль"),
+            429: OpenApiResponse(description="Слишком много попыток входа"),
+        },
+    )
     def post(request) -> Response:
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

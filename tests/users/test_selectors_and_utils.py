@@ -48,7 +48,7 @@ def test_user_str(user):
 def test_blacklist_refresh_token_handles_invalid(monkeypatch):
     class FakeRefreshToken:
         def __init__(self, raw):
-            from rest_framework_simplejwt.exceptions import TokenError
+            from rest_framework_simplejwt.exceptions import TokenError  # noqa
 
             raise TokenError("bad token")
 

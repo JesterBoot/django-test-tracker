@@ -32,7 +32,7 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py313"
-exclude = ["**/migrations/**"]
+exclude = ["**/migrations/**", "wait_for.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "PL", "N"]

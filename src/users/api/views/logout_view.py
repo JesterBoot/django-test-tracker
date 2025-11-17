@@ -34,6 +34,16 @@ class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     @staticmethod
+    @extend_schema(
+        operation_id="auth_logout",
+        tags=["Auth"],
+        summary="Logout пользователя",
+        request=logout_request_serializer,
+        responses={
+            204: OpenApiResponse(description="Успешный logout"),
+            400: OpenApiResponse(description="Refresh токен не передан"),
+        },
+    )
     def post(request) -> Response:
         data: LogoutDTO = request.data
 
