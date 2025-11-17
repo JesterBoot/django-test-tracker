@@ -4,6 +4,7 @@ from rest_framework.test import APIClient
 
 from tests.users.factories import UserFactory
 from users.api.tokens import generate_user_tokens
+from users.models import User
 
 
 @pytest.fixture
@@ -14,6 +15,22 @@ def api_client() -> APIClient:
 @pytest.fixture
 def user():
     return UserFactory()
+
+
+@pytest.fixture
+def other_user():
+    return UserFactory()
+
+
+@pytest.fixture
+def make_auth_client():
+    def _make(user: User) -> APIClient:
+        client = APIClient()
+        tokens = generate_user_tokens(user)
+        client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['access']}")
+        return client
+
+    return _make
 
 
 @pytest.fixture

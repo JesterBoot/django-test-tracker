@@ -13,7 +13,7 @@ dependencies = [
     "drf-spectacular>=0.29.0",
     "drf-spectacular-sidecar>=2025.10.1",
     "factory-boy>=3.3.3",
-    "psycopg[c]>=3.2.12",
+    "psycopg[binary]>=3.2.12",
     "pytest-cov>=7.0.0",
     "redis>=7.0.1",
 ]

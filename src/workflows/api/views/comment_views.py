@@ -15,10 +15,12 @@ from workflows.api.serializers import (
 from workflows.exceptions.comment_exceptions import (
     CommentNotFoundError,
 )
+from workflows.exceptions.task_exceptions import TaskNotFoundError
 from workflows.selectors.comment_selectors import (
     get_comment_by_id,
     list_comments_for_task,
 )
+from workflows.selectors.task_selectors import get_task_by_id
 from workflows.services.comment_services import (
     create_comment,
     delete_comment,
@@ -38,7 +40,11 @@ class CommentListCreateView(APIView):
             404: OpenApiResponse(description="Задача не найдена"),
         },
     )
-    def get(self, reqeust, task_id: UUID):
+    def get(self, request, task_id: UUID):
+        task = get_task_by_id(task_id)
+        if task is None:
+            raise TaskNotFoundError("Задача не найдена.")
+
         comments = list_comments_for_task(task_id)
         data = CommentListSerializer(comments, many=True).data
         return Response(data)

@@ -1,4 +1,4 @@
-.PHONY: help run migrate make-migrations create-superuser screate-uperuser-auto django-shell format sort-imports lint test
+.PHONY: help run migrate make-migrations create-superuser screate-uperuser-auto django-shell format sort-imports lint test test-docker
 
 help:
 	@echo "Make команды:"
@@ -11,7 +11,8 @@ help:
 	@echo "  make format                - Форматирование кода (ruff format + auto-fix)"
 	@echo "  make sort-imports          - Сортировка импортов"
 	@echo "  make lint                  - Проверка кода линтером"
-	@echo "  make test                  - Запуск тестов (pytest)"
+	@echo "  make test                  - Запуск тестов (локально)"
+	@echo "  make test-docker           - Запуск тестов (внутри докера)"
 
 run:
 	uv run python manage.py runserver
@@ -42,4 +43,7 @@ lint:
 	uv run ruff check .
 
 test:
-	uv run pytest -q
+	uv run pytest -q  # для локальных тестов
+
+test-docker:
+	docker compose run --rm app uv run pytest -q  # для запуска внутри докера
