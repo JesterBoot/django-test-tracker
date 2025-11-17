@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     # Apps
     "users",
+    "workflows",
 ]
 
 MIDDLEWARE = [

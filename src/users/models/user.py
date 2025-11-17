@@ -10,7 +10,6 @@ from users.managers.user_manager import UserManager
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
     email = models.EmailField(unique=True, max_length=255)
 
     is_active = models.BooleanField(default=True)

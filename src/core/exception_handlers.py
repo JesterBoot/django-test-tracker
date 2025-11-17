@@ -6,26 +6,31 @@ from users.exceptions.user_exceptions import (
     InvalidCredentialsError,
     UserAlreadyExistsError,
 )
+from workflows.exceptions.comment_exceptions import (
+    CommentNotFoundError,
+    CommentPermissionDeniedError,
+)
+from workflows.exceptions.task_exceptions import TaskNotFoundError, TaskPermissionDeniedError
 
 
 def custom_exception_handler(exc, context):
-    if isinstance(exc, UserAlreadyExistsError):
-        return Response(
-            {
-                "error": "user_already_exists",
-                "message": str(exc),
-            },
-            status=status.HTTP_409_CONFLICT,
-        )
+    mapping = {
+        UserAlreadyExistsError: ("user_already_exists", status.HTTP_409_CONFLICT),
+        InvalidCredentialsError: ("invalid_credentials", status.HTTP_401_UNAUTHORIZED),
+        TaskNotFoundError: ("task_not_found", status.HTTP_404_NOT_FOUND),
+        TaskPermissionDeniedError: ("task_permission_denied", status.HTTP_403_FORBIDDEN),
+        CommentNotFoundError: ("comment_not_found", status.HTTP_404_NOT_FOUND),
+        CommentPermissionDeniedError: ("comment_permission_denied", status.HTTP_403_FORBIDDEN),
+    }
 
-    if isinstance(exc, InvalidCredentialsError):
-        return Response(
-            {
-                "error": "invalid_credentials",
-                "message": str(exc),
-            },
-            status=status.HTTP_401_UNAUTHORIZED,
-        )
+    for exc_type, (error_code, http_status) in mapping.items():
+        if isinstance(exc, exc_type):
+            message = str(exc)
+            if not message:
+                if error_code == "task_not_found":
+                    message = "Задача не найдена."
+                elif error_code == "comment_not_found":
+                    message = "Комментарий не найден."
+            return Response({"error": error_code, "message": message}, status=http_status)
 
-    # передать управление стандартному DRF обработчику
     return exception_handler(exc, context)

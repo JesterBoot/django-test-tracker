@@ -32,4 +32,4 @@ def test_login_throttle(api_client):
         assert response.status_code in (200, 400, 401)
 
     blocked = api_client.post(url, payload, format="json")
-    assert blocked.status_code == 429
+    assert blocked.status_code == HTTPStatus.TOO_MANY_REQUESTS
