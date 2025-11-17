@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -12,9 +12,16 @@ from users.services.user_services import authenticate_user
 
 
 @extend_schema(
+    operation_id="auth_login",
+    tags=["Auth"],
     summary="Авторизация пользователя",
     request=LoginSerializer,
-    responses={200: LoginResponseSerializer},
+    responses={
+        200: LoginResponseSerializer,
+        400: OpenApiResponse(description="Ошибка валидации данных"),
+        401: OpenApiResponse(description="Неверный email или пароль"),
+        429: OpenApiResponse(description="Слишком много попыток входа"),
+    },
 )
 class LoginView(APIView):
     permission_classes = [AllowAny]

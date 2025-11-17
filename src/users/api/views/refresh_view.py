@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema, inline_serializer
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
 from rest_framework import serializers, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -10,14 +10,23 @@ from core.throttling import RefreshTokenRateThrottle
 from users.api.serializers import RefreshResponseSerializer
 from users.services.dto.tokens import RefreshTokenDTO, RefreshTokenResponseDTO
 
+refresh_request_serializer = inline_serializer(
+    name="RefreshRequest",
+    fields={"refresh": serializers.CharField()},
+)
+
 
 @extend_schema(
-    summary="Обновление access-токена по refresh-токену",
-    request=inline_serializer(
-        name="RefreshRequest",
-        fields={"refresh": serializers.CharField()},
-    ),
-    responses={200: RefreshResponseSerializer},
+    operation_id="auth_refresh",
+    tags=["Auth"],
+    summary="Обновление access-токена по refresh",
+    request=refresh_request_serializer,
+    responses={
+        200: RefreshResponseSerializer,
+        400: OpenApiResponse(description="Refresh-токен не передан"),
+        401: OpenApiResponse(description="Невалидный refresh-токен"),
+        429: OpenApiResponse(description="Слишком много запросов обновления токена"),
+    },
 )
 class RefreshView(APIView):
     permission_classes = [AllowAny]

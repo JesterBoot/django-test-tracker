@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -9,8 +9,13 @@ from users.selectors.user_selectors import get_user_me_dto
 
 
 @extend_schema(
+    operation_id="auth_me",
+    tags=["Auth"],
     summary="Информация о текущем пользователе",
-    responses={200: MeResponseSerializer},
+    responses={
+        200: MeResponseSerializer,
+        401: OpenApiResponse(description="Требуется аутентификация"),
+    },
 )
 class MeView(APIView):
     permission_classes = [IsAuthenticated]

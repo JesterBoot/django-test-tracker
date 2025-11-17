@@ -1,18 +1,29 @@
-from drf_spectacular.utils import OpenApiResponse, extend_schema
-from rest_framework import status
+from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import serializers, status
 
-from users.api.serializers import LogoutRequestSerializer
 from users.services.dto.logout_dto import LogoutDTO
 from users.services.user_logout import blacklist_refresh_token
 
 
+logout_request_serializer = inline_serializer(
+    name="LogoutRequest",
+    fields={"refresh": serializers.CharField()},
+)
+
+
 @extend_schema(
+    operation_id="auth_logout",
+    tags=["Auth"],
     summary="Logout (инвалидация refresh-токена)",
-    request=LogoutRequestSerializer,
-    responses={204: OpenApiResponse(description="Успешный logout")},
+    request=logout_request_serializer,
+    responses={
+        204: OpenApiResponse(description="Успешный logout"),
+        400: OpenApiResponse(description="Refresh-токен не передан"),
+        401: OpenApiResponse(description="Требуется аутентификация"),
+    },
 )
 class LogoutView(APIView):
     """
