@@ -1,4 +1,18 @@
-# django-test-tracker
+## django-test-tracker
+- Django 5 + DRF backend для управления задачами (создание, назначение исполнителя, изменение статуса, комментарии).
+- JWT-аутентификация через `djangorestframework-simplejwt`; документация API через `drf-spectacular` (Swagger/Redoc).
+- Приложения: `users` (регистрация, вход, refresh, выбор исполнителей), `workflows` (tasks + comments).
+- Прав доступа:
+  - Задачи: редактировать может только создатель или назначенный исполнитель; удалять — только создатель.
+  - Комментарии: редактировать/удалять может только автор.
+- Для продакшна: нужно внести изменения для WSGI/ASGI сервера (gunicorn/uvicorn+daphne).
+
+## Троттлинг и кеш
+- Redis используется как кеш и для DRF throttling. См. `core/throttling.py`:
+  - LoginRateThrottle — по IP (scope `login`, 5/мин по умолчанию).
+  - RefreshTokenRateThrottle — по `user_id` из refresh-токена, отпускает запрос, если токен битый.
+- Базовые лимиты: `anon: 20/min`, `user: 100/min`; переопределяются в `REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]`.
+- Для локальных тестов без Redis можно временно переключить кеш на LocMem в отдельном settings-файле или поднимать Redis в compose.
 
 ## Environment Variables
 
@@ -25,73 +39,42 @@
 | `REDIS_DB`                  | Redis индекс бд                                                       |
 
 
-## Локальная разработка
+## Запуск
 
-### 1. Установка зависимостей
+### Docker:
+1. Скопировать `.env.example` → `.env` и для docker указать `POSTGRES_HOST=db`, `REDIS_HOST=redis`.
+2. Поднять стек (app + Postgres + Redis):
+   ```bash
+   docker compose up --build -d
+   ```
+3. Миграции и при необходимости создать суперпользователя:
+   ```bash
+   docker compose exec app uv run python manage.py migrate
+   docker compose exec app uv run python manage.py createsuperuser  # опционально
+   ```
+4. Приложение: `http://127.0.0.1:8000`. 
+5. Тесты: `docker compose exec app uv run pytest -q`.
 
-Проект использует менеджер пакетов `uv`:
-
-```bash
-uv sync
-```
-
-### 2. Настройка окружения
-
-Создайте файл `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Для локальной разработки значения из `.env.example` подходят по умолчанию.
-
-### 3. Поднять базу данных
-
-#### Вариант A: Локальная установка PostgreSQL  
-Убедитесь, что параметры подключения в `.env` соответствуют вашей локальной базе данных.
-
-#### Вариант B: Поднять PostgreSQL через Docker Compose
-
-```bash
-docker compose up -d
-```
-
-База данных будет доступна на `localhost:5432`.
-
-### 4. Применение миграций
-
-```bash
-make migrate
-```
-
-### 5. Создать суперпользователя
-
-#### Вариант A: вручную
-
-```bash
-make create-superuser
-```
-
-#### Вариант B: автоматически (admin/admin)
-
-```bash
-make create-superuser-auto
-```
-
-Будет создан суперпользователь:
-
-- username: `admin`  
-- email: `admin@example.com`  
-- password: `admin`
-
-### 6. Запуск сервера разработки
-
-```bash
-make run
-```
-
-Сервер будет доступен по адресу:
-
-```
-http://127.0.0.1:8000
-```
+### Локально (без Docker):
+1. Установить зависимости:
+   ```bash
+   uv sync
+   ```
+2. Настроить окружение:
+   ```bash
+   cp .env.example .env
+   ```
+3. Поднять Postgres/Redis локально или через `docker compose up -d` (можно без сервиса `app`).
+4. Миграции:
+   ```bash
+   make migrate
+   ```
+5. Суперпользователя (опционально):
+   ```bash
+   make create-superuser  # или make create-superuser-auto
+   ```
+6. Запуск сервер разработки:
+   ```bash
+   make run
+   ```
+   Доступен: `http://127.0.0.1:8000`.

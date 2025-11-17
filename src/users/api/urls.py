@@ -6,6 +6,7 @@ from users.api.views import (
     MeView,
     RefreshView,
     RegisterView,
+    UserSelectView,
 )
 
 
@@ -15,4 +16,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="auth-logout"),
     path("me/", MeView.as_view(), name="auth-me"),
     path("refresh/", RefreshView.as_view(), name="auth-refresh"),
+    path("users/select/", UserSelectView.as_view(), name="auth-users-select"),
 ]

@@ -6,6 +6,7 @@ from .refresh_response_serializer import RefreshResponseSerializer
 from .register_response_serializer import RegisterResponseSerializer
 from .register_serializer import RegisterSerializer
 from .token_pair_serializer import TokenPairSerializer
+from .user_short_serializer import UserShortSerializer
 
 
 __all__ = [
@@ -17,4 +18,5 @@ __all__ = [
     "MeResponseSerializer",
     "RefreshResponseSerializer",
     "LogoutRequestSerializer",
+    "UserShortSerializer",
 ]

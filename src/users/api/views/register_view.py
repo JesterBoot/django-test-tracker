@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -10,15 +10,21 @@ from users.services.dto.register import RegisterUserDTO, RegisterUserResponseDTO
 from users.services.user_services import register_user
 
 
-@extend_schema(
-    summary="Регистрация пользователя",
-    request=RegisterSerializer,
-    responses={201: RegisterResponseSerializer},
-)
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
+    @extend_schema(
+        operation_id="auth_register",
+        tags=["Auth"],
+        summary="Регистрация нового пользователя",
+        request=RegisterSerializer,
+        responses={
+            201: RegisterResponseSerializer,
+            400: OpenApiResponse(description="Ошибка валидации данных"),
+            409: OpenApiResponse(description="Пользователь с таким email уже существует"),
+        },
+    )
     def post(request) -> Response:
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
